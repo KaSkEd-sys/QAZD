@@ -1,6 +1,15 @@
+PRINTEX Welcome To My Calculator!
 input A Enter first number:
 input B Enter second number:
 ADD A B C
+PRINT A
+PRINTEX +
+PRINT B 
+PRINTEX =
 PRINT C
 SUB A B C
+PRINT A
+PRINTEX -
+PRINT B
+PRINTEX =
 PRINT C

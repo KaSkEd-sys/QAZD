@@ -36,7 +36,7 @@ def jmp():
     jmpf2 = parts[1]
     IP = int(jmpf2) - 1
 def mov():
-    movf2 = parts[1]
+    movf2 = parts[1] #  
     movf3 = parts[2]
     registers[movf3] = registers[movf2]
 def jz():
@@ -62,8 +62,23 @@ def jnz():
         pass
 def halt():
     registers["Z"] = 0
+
+def mul():
+    mulf2 = parts[1]
+    mulf3 = parts[2]
+    mulf4 = parts[3]
+    mulsub1 = registers[mulf2]
+    mulsub2 = registers[mulf3]
+    mulsumming = mulsub1 * mulsub2
+    registers[mulf4] = mulsumming
+
+def printex():
+    text = " ".join(parts[1:])
+    print(text)
+
 while IP < len(program) and registers["Z"] == 1:
     line = program[IP]
+    comment = line.split(";")[0]
     parts = line.split()
     cmd = parts[0].upper() # General func in code
     if cmd == "LOAD":
@@ -74,6 +89,8 @@ while IP < len(program) and registers["Z"] == 1:
         add()
     elif cmd == "SUB":
         sub()
+    elif cmd == "MUL":
+        mul()
     elif cmd == "HALT":
         halt()
     elif cmd == "JMP":
@@ -86,4 +103,6 @@ while IP < len(program) and registers["Z"] == 1:
         qazdput()
     elif cmd == "JNZ":
         jnz()
+    elif cmd == "PRINTEX":
+        printex()
     IP += 1
