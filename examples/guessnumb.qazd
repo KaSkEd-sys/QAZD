@@ -1,0 +1,7 @@
+LOAD A 7
+INPUT B Guess the number: 
+SUB A B C
+JZ C 5
+JMP 1
+PRINT A
+HALT

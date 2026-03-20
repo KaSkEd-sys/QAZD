@@ -1,0 +1,6 @@
+input A Enter first number:
+input B Enter second number:
+ADD A B C
+PRINT C
+SUB A B C
+PRINT C
