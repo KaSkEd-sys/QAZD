@@ -1,6 +1,26 @@
-import sys
-registers = {"A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "F": 0, "Z": 1}
+"""
+Commands:
+LOAD,
+PRINT,
+ADD,
+SUB,
+MUL,
+HALT,
+JMP,
+MOV,
+JZ,
+JNZ,
+PRINTEX
 
+"""
+
+import sys
+from colorama import Fore, init
+
+init(autoreset=True)
+
+registers = {"A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "F": 0, "Z": 1}
+points_list = [""]
 file_path = sys.argv[1] # without "\" only "/"
 
 IP = 0 # Current line
@@ -76,10 +96,11 @@ def printex():
     text = " ".join(parts[1:])
     print(text)
 
+
 while IP < len(program) and registers["Z"] == 1:
     line = program[IP]
     comment = line.split(";")[0]
-    parts = line.split()
+    parts = comment.split()
     cmd = parts[0].upper() # General func in code
     if cmd == "LOAD":
         load()
@@ -105,4 +126,6 @@ while IP < len(program) and registers["Z"] == 1:
         jnz()
     elif cmd == "PRINTEX":
         printex()
+    else:
+        print(Fore.RED + f"\n[QAZD] Unknown command '{cmd}'\nline {IP}")
     IP += 1
