@@ -1,6 +1,6 @@
 PRINTEX Welcome To My Calculator!
-input A Enter first number:
-input B Enter second number:
+INPUT A Enter first number:
+INPUT B Enter second number:
 ADD A B C
 PRINT A
 PRINTEX +
