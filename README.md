@@ -24,9 +24,9 @@ cd QAZD
 pip install -r requirements.txt
 ```
 
-## Documentation
+# Documentation
 
-**Full documentation is available [here](docs/docs.md)**
+## **Full documentation is available [here](docs/docs.md)**
 
 ## Memory Cells
 
