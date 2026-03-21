@@ -11,7 +11,6 @@ MOV,
 JZ,
 JNZ,
 PRINTEX
-
 """
 
 import sys
