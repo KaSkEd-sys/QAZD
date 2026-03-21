@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="gitimage/qazdlogo.png" width="150"/>
+  <img src="gitimage/qazdlogo.png" width="300"/>
   
   # QAZD Programming Language
   
