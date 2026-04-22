@@ -1,15 +1,41 @@
-PRINTEX Welcome To My Calculator!
-INPUT A Enter first number:
-INPUT B Enter second number:
+; --- QAZD Multi-Calculator ---
+; This program takes two numbers and performs all basic math operations.
+
+PRINTEX --- QAZD CALCULATOR START ---
+
+; Step 1: Get user input
+INPUT A Enter first number: 
+INPUT B Enter second number: 
+
+PRINTEX ---------------------------
+PRINTEX [RESULTS]
+
+; Step 2: Addition (C = A + B)
 ADD A B C
-PRINT A
-PRINTEX +
-PRINT B 
-PRINTEX =
+PRINTEX Addition (A + B):
 PRINT C
-SUB A B C
+
+; Step 3: Subtraction (D = A - B)
+SUB A B D
+PRINTEX Subtraction (A - B):
+PRINT D
+
+; Step 4: Multiplication (E = A * B)
+MUL A B E
+PRINTEX Multiplication (A * B):
+PRINT E
+
+; Step 5: Division (F = A / B)
+; Note: This uses integer division (//) as per your Python code
+DIV A B F
+PRINTEX Division (A // B):
+PRINT F
+
+; Step 6: Modulo (A % B)
+MOD A B A
+PRINTEX Remainder (A % B):
 PRINT A
-PRINTEX -
-PRINT B
-PRINTEX =
-PRINT C
+
+PRINTEX ---------------------------
+PRINTEX Calculation Finished.
+HALT
