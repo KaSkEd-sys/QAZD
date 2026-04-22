@@ -1,5 +1,19 @@
-LOAD A 1
-LOAD B 1
-ADD A B A
-PRINT A
-JMP 2
+; --- QAZD Infinity Counter ---
+; This program starts from 0 and counts up forever.
+
+PRINTEX --- STARTING INFINITE COUNTER ---
+LOAD A 0    ; Initial value (Starting point)
+LOAD B 1    ; Increment value (What we add each time)
+
+LOOP:
+    ; Print the current value of Register A
+    PRINT A
+    
+    ; Add 1 to Register A: A = A + B
+    ADD A B A
+    
+    ; Jump back to the LOOP label to repeat forever
+    JMP LOOP
+
+; This line will never be reached
+HALT
