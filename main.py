@@ -70,6 +70,7 @@ def asmprint():
 def jmp():
     global IP
     IP = resolve_target(parts[1])
+    IP -= 1
 
 def mov():
     movf2 = parts[1]
@@ -80,6 +81,7 @@ def jz():
     global IP
     if registers[parts[1]] == 0:
         IP = resolve_target(parts[2])
+        IP -= 1
 
 def qazdput():
     iput2 = parts[1]  # select mem cell
@@ -91,6 +93,7 @@ def jnz():
     global IP
     if registers[parts[1]] != 0:
         IP = resolve_target(parts[2])
+        IP -= 1
 
 def halt():
     registers["Z"] = 0
@@ -107,6 +110,27 @@ def mul():
 def printex():
     text = " ".join(parts[1:])
     print(text)
+
+def div():
+    divf1 = parts[1]
+    divf2 = parts[2]
+    divf3 = parts[3]
+
+    div1 = registers[divf1]
+    div2 = registers[divf2]
+    divving = div1 // div2
+    registers[divf3] = divving
+
+def mod():
+    modf1 = parts[1]
+    modf2 = parts[2]
+    modf3 = parts[3]
+
+    mod1 = registers[modf1]
+    mod2 = registers[modf2]
+    modding = mod1 % mod2
+    registers[modf3] = modding
+
 
 while IP < len(program) and registers["Z"] == 1:
     line = program[IP]
@@ -144,6 +168,10 @@ while IP < len(program) and registers["Z"] == 1:
         jnz()
     elif cmd == "PRINTEX":
         printex()
+    elif cmd == "MOD":
+        mod()
+    elif cmd == "DIV":
+        div()
     else:
         print(Fore.RED + f"\n[QAZD] Unknown command '{cmd}'\nline {IP}")
 
