@@ -1,0 +1,40 @@
+PRINTEX --- QAZD MATH ENGINE ---
+PRINTEX Enter a number to find its factorial:
+INPUT A > 
+
+; Initialize registers
+LOAD B 1    ; Result (accumulator)
+MOV A C     ; Copy input to C (counter)
+LOAD D 1    ; Constant for subtraction
+LOAD E 0    ; Constant for zero comparison
+
+LOOP:
+    ; If counter C == 0, exit the loop
+    JZ C END_LOOP
+    
+    ; Multiply current result by counter: B = B * C
+    MUL B C B
+    
+    ; Decrease counter: C = C - D (1)
+    SUB C D C
+    
+    ; Jump back to the start of the loop
+    JMP LOOP
+
+END_LOOP:
+    PRINTEX Factorial of your number is:
+    PRINT B
+    
+    ; Parity check (using your MOD command)
+    LOAD F 2
+    MOD B F A
+    JZ A EVEN
+    PRINTEX The result is ODD.
+    JMP FINISH
+
+EVEN:
+    PRINTEX The result is EVEN.
+
+FINISH:
+    PRINTEX Goodbye!
+    HALT
