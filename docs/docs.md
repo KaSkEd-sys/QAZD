@@ -1,349 +1,247 @@
-# QAZD Programming Language — Documentation
+# *QAZD programming language documentation*
 
----
+_QAZD uses 7 memory cells of which 1 (Z) is necessary for the interpreter to work._
+_You can load a specific value into one of the memory cells._
 
-## Memory Cells
-
-*QAZD has 7 memory cells. Cell **Z** is reserved for the interpreter — do not use it for data.*
-
-| Cell | Purpose              |
-|------|----------------------|
-| A    | General purpose      |
-| B    | General purpose      |
-| C    | General purpose      |
-| D    | General purpose      |
-| E    | General purpose      |
-| F    | General purpose      |
-| Z    | System (interpreter control) |
-
----
-
-## LOAD
-
-*Load a value into a memory cell.*
-
-```
-LOAD (CELL) (VALUE)
+```BASIC
+LOAD (MEM CELL) (VALUE)
 ```
 
-**Example:**
+_To display text on the screen, use the "**PRINTEX**" command._
 
 ```
-LOAD A 5  ; A = 5
-LOAD B 10 ; B = 10
+PRINTEX (Your text)
 ```
 
----
+***example, this code just load a value 5 into memory cell "A" and print it:***
 
-## PRINT / PRINTEX
+```BASIC
+LOAD A 5 ; Loads value 5 in cell "A"
+PRINT A  ; print it
+```
 
-*Print the value of a cell, or print a literal text string.*
+_**Also, you can add, subtract, multiply, divide values of the cells using these commands:**_
 
 ```
-PRINT (CELL)
-PRINTEX (text)
+ADD ; add
+SUB ; subtract
+MUL ; multiply
+DIV ; integer division
+MOD ; remainder of division
+```
+
+**and using this template:**
+
+```
+ADD (FIRST CELL) (SECOND CELL) (CELL FOR RESULT)
 ```
 
 **Example:**
 
-```
-LOAD A 42
-PRINT A         ; prints: 42
-PRINTEX Hello!  ; prints: Hello!
+```BASIC
+LOAD A 16 ; load value 16 in cell "A"
+LOAD B 16 ; load value 16 in cell "B"
+ADD A B C ; adding A + B and save result in "C"
+PRINT C   ; print result of 16 + 16
+SUB A B C ; subtract A - B and save result in C
+PRINT C   ; print result of 16 - 16
+MUL A B C ; multiply A * B and save result in C
+PRINT C   ; print result of 16 * 16
 ```
 
----
+**Output:**
 
-## Math — ADD, SUB, MUL
-
-*Perform arithmetic on two cells and store the result in a third.*
-
+```BASH
+[$] > python main.py examples/math.qazd
+32
+0
+256
 ```
-ADD (CELL1) (CELL2) (RESULT)
-SUB (CELL1) (CELL2) (RESULT)
-MUL (CELL1) (CELL2) (RESULT)
-```
+
+_If you need to divide the value of one cell by another, use the **"DIV"** command (integer division)._
+_If you need to get the remainder of division, use the **"MOD"** command._
 
 **Example:**
 
-```
-LOAD A 16
-LOAD B 4
-ADD A B C ; C = 16 + 4 = 20
+```BASIC
+LOAD A 10
+LOAD B 3
+DIV A B C ; C = 10 // 3 = 3
 PRINT C
-SUB A B C ; C = 16 - 4 = 12
-PRINT C
-MUL A B C ; C = 16 * 4 = 64
+MOD A B C ; C = 10 % 3 = 1
 PRINT C
 ```
 
 **Output:**
 
-```
-20
-12
-64
-```
-
----
-
-## MOV
-
-*Copy a value from one cell to another.*
-
-```
-MOV (SOURCE) (DEST)
+```BASH
+[$] > python main.py examples/divmod.qazd
+3
+1
 ```
 
-**Example:**
+_if you need to terminate the program execution through code, you can use the **HALT** command._
+_**HALT** — Just sets cell "Z" value "0"._
 
-```
-LOAD A 7
-MOV A B  ; B = 7
-PRINT B
-```
-
----
-
-## INPUT
-
-*Prompt the user to enter a number and store it in a cell.*
-
-```
-INPUT (CELL) (prompt text)
-```
-
-**Example:**
-
-```
-INPUT A Enter a number: 
-PRINT A
-```
-
----
-
-## HALT
-
-*Stop program execution immediately.*
-
-```
+```BASIC
+LOAD A 9
+LOAD B 8
+ADD A B C
+PRINT C
 HALT
+SUB A B C
+PRINT C
 ```
 
-*Equivalent to:*
+**Output:**
 
+```BASH
+[$] > python main.py examples/halt.qazd
+17
 ```
+
+_or you can use_
+
+```BASIC
 LOAD Z 0
 ```
 
+_If you need to move to a specific line in the code, you can use the "**JMP**" command._
+_**JMP** supports two modes: jumping by **line number** or jumping by **label**._
+
+---
+
+**Mode 1 — jump by line number (1-based, first line = 1):**
+
+```
+JMP (line number)
+```
+
 **Example:**
 
+```BASIC
+LOAD A 1  ; line 1 - Loads 1 in cell A
+LOAD B 1  ; line 2 - Loads 1 in cell B
+ADD A B A ; line 3 - A = A + B
+PRINT A   ; line 4 - prints cell "A"
+JMP 3     ; line 5 - Jumps to line 3
 ```
+
+---
+
+**Mode 2 — jump by label:**
+
+_Define a label by writing its name followed by `:` on a separate line._
+_Then use the label name as the jump target._
+
+```
+LABEL_NAME:
+JMP LABEL_NAME
+```
+
+**Example:**
+
+```BASIC
+LOAD A 1
+LOAD B 1
+LOOP:
+	ADD A B A
+	PRINT A
+JMP LOOP  ; Jumps to LOOP label
+```
+
+_Labels also work with **JZ** and **JNZ**:_
+
+```BASIC
 LOAD A 5
+LOAD B 1
+LOOP:
 PRINT A
-HALT
-LOAD A 99  ; this line will never execute
-PRINT A
-```
-
-**Output:**
-
-```
-5
-```
-
----
-
-## Labels
-
-*Labels let you name a line and jump to it by name.*
-*This keeps your code stable — adding or removing lines won't break your jumps.*
-
-*Declare a label by writing its name followed by a colon on its own line:*
-
-```
-loop:
-```
-
-*Then pass the label name to **JMP**, **JZ**, or **JNZ**:*
-
-```
-JMP loop
-JZ  A done
-JNZ A loop
-```
-
-> **Note:** Numeric jumps (`JMP 3`) still work for backwards compatibility.
-
----
-
-## JMP
-
-*Jump unconditionally to a label.*
-
-```
-JMP (label)
-```
-
-**Example — infinite counter:**
-
-```
-LOAD A 0
-LOAD B 1
-
-loop:
-    ADD A B A
-    PRINT A
-    JMP loop
-```
-
----
-
-## JZ
-
-*Jump to a label if the cell value equals zero.*
-
-```
-JZ (CELL) (label)
-```
-
-**Example — countdown:**
-
-```
-LOAD A 5
-LOAD B 1
-
-loop:
-    PRINT A
-    SUB A B A
-    JZ A done
-    JMP loop
-
-done:
-    PRINTEX Done!
-    HALT
-```
-
-**Output:**
-
-```
-5
-4
-3
-2
-1
-Done!
-```
-
----
-
-## JNZ
-
-*Jump to a label if the cell value is NOT zero.*
-
-```
-JNZ (CELL) (label)
-```
-
-**Example — countdown (shorter):**
-
-```
-LOAD A 5
-LOAD B 1
-
-loop:
-    PRINT A
-    SUB A B A
-    JNZ A loop
+SUB A B A
+JNZ A LOOP  ; if A != 0, jump to LOOP
 HALT
 ```
 
-**Output:**
+_If you need to copy a value from one cell to another, use the "**MOV**" command._
+
+**Just use this sample:**
 
 ```
-5
-4
-3
-2
-1
+MOV (where to copy from) (where to insert)
 ```
 
----
+_If you need to compare the value of any cell with zero, and if this expression is true, jump to any line, use the "**JZ**" command._
 
-## Comments
-
-*Use `;` to write a comment. Everything after `;` on the same line is ignored.*
-
-```
-LOAD A 5  ; load 5 into A
-PRINT A   ; print it
-```
-
----
-
-## Errors
-
-*If the interpreter encounters an unknown command, it prints an error in red and continues to the next line:*
-
-```
-[QAZD] Unknown command 'XYZ'
-line 4
+```BASIC
+LOAD A 5      ; load 5 into A
+LOAD B 1      ; load 1 into B (subtractor)
+PRINT A       ; print A
+SUB A B A     ; A = A - 1
+JZ A 7        ; if A = 0, jump to HALT
+JMP 3         ; else jump back to PRINT
+HALT          ; stop
 ```
 
-*Common mistakes:*
+_If you need to compare the value of a memory cell for inequality with zero, use the "**JNZ**" command._
 
-| Mistake | Result |
-|--------|--------|
-| Unknown command | Red error message, execution continues |
-| `INPUT` with non-numeric input | Python `ValueError` crash |
-| `JMP`/`JZ`/`JNZ` with unknown label | Python `KeyError` crash |
-| Using cell `Z` for data | May stop the interpreter unexpectedly |
+```BASIC
+LOAD A 5      ; load 5 into A
+LOAD B 1      ; load 1 into B (subtractor)
+PRINT A       ; print A
+SUB A B A     ; A = A - 1
+JNZ A 3       ; if A != 0, jump back to PRINT
+HALT          ; stop
+```
 
----
-
-## Full Example
-
-*A simple calculator that adds and subtracts two numbers entered by the user:*
+_If you need to prompt the user for a value to write to a cell, use **"INPUT"** with this template:_
 
 ```
-PRINTEX == QAZD Calculator ==
+INPUT (cell for storing the result) (additional text)
+```
+
+**Easy calculator**
+
+```BASIC
+; --- QAZD Multi-Calculator ---
+; This program takes two numbers and performs all basic math operations.
+
+PRINTEX --- QAZD CALCULATOR START ---
+
+; Step 1: Get user input
 INPUT A Enter first number: 
 INPUT B Enter second number: 
 
+PRINTEX ---------------------------
+PRINTEX [RESULTS]
+
+; Step 2: Addition (C = A + B)
 ADD A B C
-PRINT A
-PRINTEX +
-PRINT B
-PRINTEX =
+PRINTEX Addition (A + B):
 PRINT C
 
-PRINTEX ---
+; Step 3: Subtraction (D = A - B)
+SUB A B D
+PRINTEX Subtraction (A - B):
+PRINT D
 
-SUB A B C
+; Step 4: Multiplication (E = A * B)
+MUL A B E
+PRINTEX Multiplication (A * B):
+PRINT E
+
+; Step 5: Division (F = A / B)
+; Note: This uses integer division (//) as per your Python code
+DIV A B F
+PRINTEX Division (A // B):
+PRINT F
+
+; Step 6: Modulo (A % B)
+MOD A B A
+PRINTEX Remainder (A % B):
 PRINT A
-PRINTEX -
-PRINT B
-PRINTEX =
-PRINT C
 
+PRINTEX ---------------------------
+PRINTEX Calculation Finished.
 HALT
-```
 
-**Output (for inputs 10 and 3):**
-
-```
-== QAZD Calculator ==
-Enter first number: 10
-Enter second number: 3
-10
-+
-3
-=
-13
----
-10
--
-3
-=
-7
 ```
